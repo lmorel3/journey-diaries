@@ -4,41 +4,44 @@ import android.app.Fragment
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.annotation.Nullable
-import android.support.v7.widget.LinearLayoutManager
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import g3.cpe.fr.journeydiaries.R
-import g3.cpe.fr.journeydiaries.adapters.JourneyListAdapter
-import g3.cpe.fr.journeydiaries.databinding.FragmentJourneyBinding
+import g3.cpe.fr.journeydiaries.databinding.FragmentAddJourneyBinding
+import g3.cpe.fr.journeydiaries.listeners.ClickListener
 import g3.cpe.fr.journeydiaries.models.Journey
-import java.text.SimpleDateFormat
-import java.util.*
+import g3.cpe.fr.journeydiaries.models.JourneyViewModel
 
 
-class JourneysFragment : Fragment() {
+class AddEditJourneyFragment : Fragment() {
+
+    lateinit var journey: Journey
+    lateinit var btnListener: ClickListener<Void?>
 
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: FragmentJourneyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_journey, container, false)
-        binding.journeysList.layoutManager = LinearLayoutManager(binding.root.context)
+        val binding: FragmentAddJourneyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_journey, container, false)
 
-        val journeys: MutableList<Journey> = ArrayList()
+        binding.jvm = JourneyViewModel(journey)
 
-        journeys.add(Journey("Torontoto", mkDate("2010/10/10"), mkDate("2010/11/11")))
-        journeys.add(Journey("Zob", mkDate("2013/12/12"), mkDate("2014/01/01")))
-
-        binding.journeysList.adapter = JourneyListAdapter(journeys)
+        binding.btnCancel.setOnClickListener { cancel() }
+        binding.btnSave.setOnClickListener { save() }
 
         return binding.root
     }
 
-    private fun mkDate(str: String): Calendar {
-        val cal = Calendar.getInstance()
-        val sdf = SimpleDateFormat("yyyy/mm/dd", Locale.FRENCH)
-        cal.time = sdf.parse(str)
+    private fun save() {
+        // TODO: Persist data
 
-        return cal
+        Toast.makeText(context, "Saved !", Toast.LENGTH_SHORT).show()
+
+        cancel()
+    }
+
+    private fun cancel() {
+        btnListener.onClick(null)
     }
 
 }
