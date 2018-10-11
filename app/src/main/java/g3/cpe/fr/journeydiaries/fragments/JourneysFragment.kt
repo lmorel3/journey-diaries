@@ -25,7 +25,7 @@ class JourneysFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = populateList(inflater, container)
 
-        binding.addJourneyButton.setOnClickListener { btnClickListener.onClick(Journey("", Calendar.getInstance(), Calendar.getInstance())) }
+        binding.addJourneyButton.setOnClickListener { btnClickListener.onClick(Journey(null, "", Calendar.getInstance(), Calendar.getInstance())) }
 
         return binding.root
     }
@@ -36,8 +36,8 @@ class JourneysFragment : Fragment() {
 
         val journeys: MutableList<Journey> = ArrayList()
 
-        journeys.add(Journey("Torontoto", mkDate("2010/10/10"), mkDate("2010/11/11")))
-        journeys.add(Journey("Zob", mkDate("2013/12/12"), mkDate("2014/01/01")))
+        journeys.add(Journey(1, "Torontoto", mkDate("2010/10/10"), mkDate("2010/11/11")))
+        journeys.add(Journey(2, "Zob", mkDate("2013/12/12"), mkDate("2014/01/01")))
 
         binding.journeysList.adapter = JourneyListAdapter(journeys, btnClickListener)
 
