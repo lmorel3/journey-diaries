@@ -7,6 +7,9 @@
             name="jvm"
             type="g3.cpe.fr.journeydiaries.models.JourneyViewModel"
             />
+        <variable
+                name="presenter"
+                type="g3.cpe.fr.journeydiaries.fragments.MainActivityPresenter"/>
     </data>
 
 
@@ -166,6 +169,7 @@
             <Button
                     android:text="@string/btn_cancel"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> presenter.onClick()"
                     android:id="@+id/btn_cancel"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_conversion_absoluteHeight="48dp"

@@ -14,7 +14,6 @@ import g3.cpe.fr.journeydiaries.databinding.FragmentJourneysBinding
 import g3.cpe.fr.journeydiaries.listeners.ClickListener
 import g3.cpe.fr.journeydiaries.models.Journey
 import g3.cpe.fr.journeydiaries.repositories.JourneysRepository
-import java.util.*
 
 
 class JourneysFragment : Fragment() {
@@ -27,7 +26,7 @@ class JourneysFragment : Fragment() {
         journeysRepository = JourneysRepository(context)
 
         val binding = populateList(inflater, container)
-        binding.addJourneyButton.setOnClickListener { btnClickListener.onClick(Journey(null, "", Calendar.getInstance(), Calendar.getInstance())) }
+        binding.addJourneyButton.setOnClickListener { btnClickListener.onClick(Journey.make()) }
 
         return binding.root
     }

@@ -31,7 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static DbHelper getInstance(Context context) {
         if(instance == null) {
-            instance = new DbHelper(context, "mydb.db", null, 2);
+            instance = new DbHelper(context, "mydb.db", null, 1);
         }
 
         return instance;
