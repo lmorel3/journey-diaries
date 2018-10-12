@@ -2,9 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-                name="jvm"
-                type="g3.cpe.fr.journeydiaries.models.JourneyViewModel"
-                />
+            name="jvm"
+            type="g3.cpe.fr.journeydiaries.models.JourneyViewModel" />
+        <variable
+            name="presenter"
+            type="g3.cpe.fr.journeydiaries.fragments.AddEditJourneyFragment.AddEditPresenter"/>
     </data>
 
     <LinearLayout

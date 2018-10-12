@@ -6,6 +6,7 @@ import java.util.*
 
 class JourneyViewModel internal constructor(private var journey: Journey) : BaseObservable() {
 
+    fun getId() = journey.id
     fun getName() = journey.name
     fun getFrom() = formatDate(journey.from)
     fun getTo() = formatDate(journey.to)

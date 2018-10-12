@@ -8,8 +8,8 @@
             type="g3.cpe.fr.journeydiaries.models.JourneyViewModel"
             />
         <variable
-                name="presenter"
-                type="g3.cpe.fr.journeydiaries.fragments.MainActivityPresenter"/>
+            name="presenter"
+            type="g3.cpe.fr.journeydiaries.fragments.AddEditJourneyFragment.AddEditPresenter"/>
     </data>
 
 
@@ -156,6 +156,34 @@
         <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                tools:layout_conversion_absoluteHeight="62dp"
+                tools:layout_conversion_absoluteWidth="374dp"
+                android:id="@+id/constraintLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4">
+
+            <ImageButton
+                    android:layout_width="122dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_dialog_map"
+                    android:id="@+id/imageButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="@string/display_map"
+                    android:onClick="@{() -> presenter.onShowMap(jvm.id)}"
+                    android:layout_marginStart="8dp"/>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 tools:layout_conversion_absoluteHeight="48dp"
                 tools:layout_conversion_absoluteWidth="374dp"
                 android:id="@+id/constraintLayout4"
@@ -169,7 +197,7 @@
             <Button
                     android:text="@string/btn_cancel"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> presenter.onClick()"
+                    android:onClick="@{() -> presenter.onShowList()}"
                     android:id="@+id/btn_cancel"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_conversion_absoluteHeight="48dp"

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import g3.cpe.fr.journeydiaries.fragments.AddEditJourneyFragment
 import g3.cpe.fr.journeydiaries.fragments.JourneysFragment
 import g3.cpe.fr.journeydiaries.fragments.MainActivityContract
+import g3.cpe.fr.journeydiaries.fragments.MapFragment
 import g3.cpe.fr.journeydiaries.listeners.ClickListener
 import g3.cpe.fr.journeydiaries.models.Journey
 
@@ -50,7 +51,20 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         }
 
         fragment.journey = journey
+        fragment.addEditPresenter = AddEditJourneyFragment.AddEditPresenter(this)
         fragment.btnListener = btnListener
+
+        transaction.addToBackStack(null)
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
+
+    override fun showMap(journeyId: Int) {
+        val manager: FragmentManager = getFragmentManager()
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        val fragment = MapFragment()
+
+        fragment.journeyId = journeyId
 
         transaction.addToBackStack(null)
         transaction.replace(R.id.fragment_container, fragment)

@@ -24,11 +24,22 @@ import java.util.*
 
 class AddEditJourneyFragment : Fragment() {
 
+    class AddEditPresenter(private val view: MainActivityContract.View) : MainActivityContract.Presenter {
+        override fun onShowMap(journeyId: Int) {
+            view.showMap(journeyId)
+        }
+
+        override fun onShowList() {
+            view.showList()
+        }
+    }
+
     lateinit var journey: Journey
     lateinit var btnListener: ClickListener<Void?>
     lateinit var journeysRepository: JourneysRepository
 
     lateinit var binding: FragmentAddJourneyBinding
+    lateinit var addEditPresenter: AddEditPresenter
 
     @RequiresApi(Build.VERSION_CODES.N)
     @Nullable
@@ -39,11 +50,11 @@ class AddEditJourneyFragment : Fragment() {
         this.binding = binding
 
         binding.jvm = JourneyViewModel(journey)
+        binding.presenter = addEditPresenter
 
         binding.inputFrom.setOnClickListener { openDatePicker(binding.inputFrom) }
         binding.inputTo.setOnClickListener { openDatePicker(binding.inputTo) }
 
-        binding.btnCancel.setOnClickListener { cancel() }
         binding.btnSave.setOnClickListener { save() }
         binding.btnDelete.setOnClickListener { openConfirmDelete() }
 

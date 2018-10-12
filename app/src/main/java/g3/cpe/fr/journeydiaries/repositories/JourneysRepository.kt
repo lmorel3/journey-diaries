@@ -2,6 +2,7 @@ package g3.cpe.fr.journeydiaries.repositories
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import g3.cpe.fr.journeydiaries.models.Journey
 import java.util.*
 
@@ -43,6 +44,27 @@ class JourneysRepository(context: Context) {
 
     fun getAll(): List<Journey> {
         val curs = db.readableDatabase.query(TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), null, null, null, null, null)
+        return extractJourneys(curs)
+    }
+
+    fun get(id: Int): Journey {
+        val curs = db.readableDatabase.query(TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), "$KEY_JOURNEY_ID=?", arrayOf(id.toString()), null, null, null)
+        return extractJourneys(curs)[0]
+    }
+
+    fun delete(journey: Journey) {
+        try {
+
+            db.writableDatabase.beginTransaction()
+            db.writableDatabase.delete(TABLE_NAME, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
+            db.writableDatabase.setTransactionSuccessful()
+
+        } finally {
+            db.writableDatabase.endTransaction()
+        }
+    }
+
+    private fun extractJourneys(curs: Cursor): List<Journey> {
         val results: MutableList<Journey> = mutableListOf()
 
         (1 .. curs.count).map {
@@ -60,18 +82,6 @@ class JourneysRepository(context: Context) {
 
         curs.close()
         return results
-    }
-
-    fun delete(journey: Journey) {
-        try {
-
-            db.writableDatabase.beginTransaction()
-            db.writableDatabase.delete(TABLE_NAME, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
-            db.writableDatabase.setTransactionSuccessful()
-
-        } finally {
-            db.writableDatabase.endTransaction()
-        }
     }
 
 }
