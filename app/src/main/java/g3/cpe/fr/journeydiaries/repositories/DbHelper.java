@@ -6,6 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
 
+    private static final String SQL_CREATE_TABLE = "CREATE TABLE journey (" +
+            "`name` TEXT," +
+            "`from` INTEGER," +
+            "`to` INTEGER)";
+
     private static DbHelper instance;
 
     private DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -14,12 +19,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.beginTransaction();
+        db.execSQL(SQL_CREATE_TABLE);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     public static DbHelper getInstance(Context context) {

@@ -151,7 +151,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:layout_conversion_absoluteHeight="48dp"
                 tools:layout_conversion_absoluteWidth="374dp"
@@ -170,9 +170,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_conversion_absoluteHeight="48dp"
                     android:layout_width="wrap_content"
-                    tools:layout_editor_absoluteY="185dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_conversion_absoluteWidth="88dp"/>
+                    tools:layout_conversion_absoluteWidth="88dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp"/>
+
+            <Button
+                    android:text="@string/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_delete"
+                    app:layout_constraintStart_toEndOf="@+id/btn_cancel"
+                    tools:layout_conversion_absoluteHeight="48dp"
+                    tools:layout_conversion_absoluteWidth="88dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp"/>
 
             <Button
                     android:text="@string/btn_save"
@@ -180,10 +192,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_save"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btn_cancel"
-                    tools:layout_conversion_absoluteHeight="48dp"
-                    tools:layout_editor_absoluteY="185dp"
-                    tools:layout_conversion_absoluteWidth="88dp"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp"
+                    />
 
         </android.support.constraint.ConstraintLayout>
 

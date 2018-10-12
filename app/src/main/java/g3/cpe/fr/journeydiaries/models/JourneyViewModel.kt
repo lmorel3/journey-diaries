@@ -4,18 +4,24 @@ import android.databinding.BaseObservable
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JourneyViewModel internal constructor(private val journey: Journey) : BaseObservable() {
+class JourneyViewModel internal constructor(private var journey: Journey) : BaseObservable() {
 
     fun getName() = journey.name
     fun getFrom() = formatDate(journey.from)
     fun getTo() = formatDate(journey.to)
 
-    fun onJourneyClick() {
-        println("OnClick ${getName()}")
-    }
+    companion object {
+        fun formatDate(date: Calendar): String {
+            return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM, Locale.getDefault()).format(date.time)
+        }
 
-    private fun formatDate(date: Calendar): String {
-        return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM, Locale.getDefault()).format(date.time)
+        fun parseDate(str: String): Calendar {
+            val date = SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM, Locale.getDefault()).parse(str)
+            val cal = Calendar.getInstance()
+            cal.time = date
+
+            return cal
+        }
     }
 
 }
