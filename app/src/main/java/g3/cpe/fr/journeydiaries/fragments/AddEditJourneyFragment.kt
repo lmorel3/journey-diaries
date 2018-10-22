@@ -24,15 +24,7 @@ import java.util.*
 
 class AddEditJourneyFragment : Fragment() {
 
-    class AddEditPresenter(private val view: MainActivityContract.View) : MainActivityContract.Presenter {
-        override fun onShowMap(journeyId: Int) {
-            view.showMap(journeyId)
-        }
-
-        override fun onShowList() {
-            view.showList()
-        }
-    }
+    class AddEditPresenter(view: MainActivityContract.View) : MainActivityContract.Presenter(view)
 
     lateinit var journey: Journey
     lateinit var btnListener: ClickListener<Void?>
@@ -93,16 +85,16 @@ class AddEditJourneyFragment : Fragment() {
 
         updateJourney()
         journeysRepository.save(journey)
-
         Toast.makeText(context, "Saved !", Toast.LENGTH_SHORT).show()
-        cancel()
+
+        addEditPresenter.onShowList()
     }
 
     private fun delete() {
         journeysRepository.delete(journey)
-
         Toast.makeText(context, "Removed !", Toast.LENGTH_SHORT).show()
-        cancel()
+
+        addEditPresenter.onShowList()
     }
 
     private fun updateJourney() {
@@ -110,9 +102,4 @@ class AddEditJourneyFragment : Fragment() {
         journey.from = JourneyViewModel.parseDate(binding.inputFrom.text.toString())
         journey.to = JourneyViewModel.parseDate(binding.inputTo.text.toString())
     }
-
-    private fun cancel() {
-        btnListener.onClick(null)
-    }
-
 }

@@ -21,20 +21,9 @@ import g3.cpe.fr.journeydiaries.models.JourneyViewModel
 import g3.cpe.fr.journeydiaries.repositories.JourneysRepository
 
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment() {
 
-    private lateinit var mMap: GoogleMap
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
-
-    lateinit var journeysRepository: JourneysRepository
+    private lateinit var journeysRepository: JourneysRepository
     var journeyId: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -51,7 +40,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
-    fun loadJourney(): Journey {
+    private fun loadJourney(): Journey {
         return journeysRepository.get(journeyId)
     }
 
