@@ -4,12 +4,15 @@ import android.app.FragmentManager
 import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import g3.cpe.fr.journeydiaries.fragments.AddEditJourneyFragment
-import g3.cpe.fr.journeydiaries.fragments.JourneysFragment
-import g3.cpe.fr.journeydiaries.fragments.MainActivityContract
-import g3.cpe.fr.journeydiaries.fragments.MapFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import g3.cpe.fr.journeydiaries.fragments.*
 import g3.cpe.fr.journeydiaries.listeners.ClickListener
 import g3.cpe.fr.journeydiaries.models.Journey
+import g3.cpe.fr.journeydiaries.models.Note
 
 
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
@@ -52,6 +55,20 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         fragment.journey = journey
         fragment.addEditPresenter = AddEditJourneyFragment.AddEditPresenter(this)
         fragment.btnListener = btnListener
+
+        transaction.addToBackStack(null)
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
+    }
+
+    override fun showAddEditNote(journey: Journey, note: Note) {
+        val manager: FragmentManager = getFragmentManager()
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        val fragment = AddEditNoteFragment()
+
+        fragment.journey = journey
+        fragment.note = note
+        fragment.addEditNotePresenter = AddEditNoteFragment.AddEditNotePresenter(this)
 
         transaction.addToBackStack(null)
         transaction.replace(R.id.fragment_container, fragment)

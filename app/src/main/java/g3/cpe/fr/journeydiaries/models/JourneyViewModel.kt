@@ -11,6 +11,9 @@ class JourneyViewModel internal constructor(private var journey: Journey) : Base
     fun getFrom() = formatDate(journey.from)
     fun getTo() = formatDate(journey.to)
 
+    fun getJourney() = journey
+    fun getEmptyNote() = Note.mkNote(journey)
+
     companion object {
         fun formatDate(date: Calendar): String {
             return SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM, Locale.getDefault()).format(date.time)

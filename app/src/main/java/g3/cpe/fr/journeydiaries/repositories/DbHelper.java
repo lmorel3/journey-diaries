@@ -6,10 +6,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final String SQL_CREATE_TABLE = "CREATE TABLE journey (" +
+    private static final String SQL_CREATE_TABLE_JOURNEY = "CREATE TABLE journey (" +
             "`name` TEXT," +
             "`from` INTEGER," +
             "`to` INTEGER)";
+
+    private static final String SQL_CREATE_TABLE_NOTE = "CREATE TABLE note (" +
+            "`journey_id` INTEGER," +
+            "`description` TEXT," +
+            "`long` REAL," +
+            "`lat` REAL)";
 
     private static DbHelper instance;
 
@@ -20,7 +26,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.beginTransaction();
-        db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_CREATE_TABLE_JOURNEY);
+        db.execSQL(SQL_CREATE_TABLE_NOTE);
         db.setTransactionSuccessful();
         db.endTransaction();
     }
