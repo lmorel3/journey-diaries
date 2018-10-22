@@ -4,11 +4,6 @@ import android.app.FragmentManager
 import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import g3.cpe.fr.journeydiaries.fragments.AddEditJourneyFragment
 import g3.cpe.fr.journeydiaries.fragments.JourneysFragment
 import g3.cpe.fr.journeydiaries.fragments.MainActivityContract
@@ -17,9 +12,7 @@ import g3.cpe.fr.journeydiaries.listeners.ClickListener
 import g3.cpe.fr.journeydiaries.models.Journey
 
 
-class MainActivity : AppCompatActivity(), MainActivityContract.View, OnMapReadyCallback {
-
-    private var map: GoogleMap? = null;
+class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,15 +69,5 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, OnMapReadyC
         transaction.replace(R.id.fragment_container, fragment)
         transaction.commit()
     }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        map!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map!!.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
-
 
 }

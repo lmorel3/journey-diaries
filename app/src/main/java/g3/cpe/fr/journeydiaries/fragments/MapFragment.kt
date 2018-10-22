@@ -9,19 +9,19 @@ import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import g3.cpe.fr.journeydiaries.R
 import g3.cpe.fr.journeydiaries.databinding.FragmentMapBinding
 import g3.cpe.fr.journeydiaries.models.Journey
 import g3.cpe.fr.journeydiaries.models.JourneyViewModel
+import g3.cpe.fr.journeydiaries.providers.LocationProvider
 import g3.cpe.fr.journeydiaries.repositories.JourneysRepository
 
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var journeysRepository: JourneysRepository
     var journeyId: Int = 0
@@ -35,13 +35,24 @@ class MapFragment : Fragment() {
         val journey = loadJourney()
         binding.jvm = JourneyViewModel(journey)
 
-        //binding.root.mapView.getMapAsync(this)
+        val mapFragment : SupportMapFragment? =
+                fragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
 
         return binding.root
     }
 
     private fun loadJourney(): Journey {
         return journeysRepository.get(journeyId)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Add a marker in Sydney, Australia, and move the camera.
+        val sydney = LatLng(-34.0, 151.0)
+        with(googleMap) {
+            moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f))
+            addMarker(MarkerOptions().position(sydney))
+        }
     }
 
 }
