@@ -43,8 +43,8 @@ class NotesRepository(context: Context) {
 
     }
 
-    fun getAll(): List<Note> {
-        val curs = db.readableDatabase.query(NOTE_TABLE_NAME, arrayOf(KEY_NOTE_ID, KEY_NOTE_JOURNEY_ID, KEY_NOTE_DESCRIPTION, KEY_NOTE_LAT, KEY_NOTE_LONG), null, null, null, null, null)
+    fun getByJourneyId(journeyId: Int): List<Note> {
+        val curs = db.readableDatabase.query(NOTE_TABLE_NAME, arrayOf(KEY_NOTE_ID, KEY_NOTE_JOURNEY_ID, KEY_NOTE_DESCRIPTION, KEY_NOTE_LAT, KEY_NOTE_LONG), "$KEY_NOTE_JOURNEY_ID=?", arrayOf(journeyId.toString()), null, null, null)
         return extractNotes(curs)
     }
 

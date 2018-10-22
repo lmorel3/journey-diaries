@@ -14,8 +14,8 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_NOTE = "CREATE TABLE note (" +
             "`journey_id` INTEGER," +
             "`description` TEXT," +
-            "`long` REAL," +
-            "`lat` REAL)";
+            "`longitude` REAL," +
+            "`latitude` REAL)";
 
     private static DbHelper instance;
 
