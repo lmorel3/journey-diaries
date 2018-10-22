@@ -1,6 +1,7 @@
 package g3.cpe.fr.journeydiaries.fragments
 
 import g3.cpe.fr.journeydiaries.models.Journey
+import g3.cpe.fr.journeydiaries.models.Note
 
 class MainActivityContract {
 
@@ -14,12 +15,16 @@ class MainActivityContract {
         fun onAddEdit(journey: Journey) {
             view.showAddEdit(journey)
         }
+        fun onAddEditNote(journey: Journey, note: Note) {
+            view.showAddEditNote(journey, note)
+        }
     }
 
     interface View {
         fun showList()
         fun showMap(journeyId: Int)
         fun showAddEdit(journey: Journey)
+        fun showAddEditNote(journey: Journey, note: Note)
     }
 
 }

@@ -6,7 +6,7 @@ import android.database.Cursor
 import g3.cpe.fr.journeydiaries.models.Journey
 import java.util.*
 
-const val TABLE_NAME: String = "journey"
+const val JOURNEY_TABLE_NAME: String = "journey"
 const val KEY_JOURNEY_ID: String = "rowid"
 const val KEY_JOURNEY_NAME: String = "name"
 const val KEY_JOURNEY_FROM: String = "from"
@@ -28,10 +28,10 @@ class JourneysRepository(context: Context) {
             values.put("`$KEY_JOURNEY_TO`", journey.to.timeInMillis)
 
             if(journey.id == null) {
-                db.writableDatabase.insert(TABLE_NAME, null, values)
+                db.writableDatabase.insert(JOURNEY_TABLE_NAME, null, values)
             } else {
                 values.put(KEY_JOURNEY_ID, journey.id)
-                db.writableDatabase.update(TABLE_NAME, values, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
+                db.writableDatabase.update(JOURNEY_TABLE_NAME, values, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
             }
 
             db.writableDatabase.setTransactionSuccessful()
@@ -43,12 +43,12 @@ class JourneysRepository(context: Context) {
     }
 
     fun getAll(): List<Journey> {
-        val curs = db.readableDatabase.query(TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), null, null, null, null, null)
+        val curs = db.readableDatabase.query(JOURNEY_TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), null, null, null, null, null)
         return extractJourneys(curs)
     }
 
     fun get(id: Int): Journey {
-        val curs = db.readableDatabase.query(TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), "$KEY_JOURNEY_ID=?", arrayOf(id.toString()), null, null, null)
+        val curs = db.readableDatabase.query(JOURNEY_TABLE_NAME, arrayOf(KEY_JOURNEY_ID, KEY_JOURNEY_NAME, "`$KEY_JOURNEY_FROM`", "`$KEY_JOURNEY_TO`"), "$KEY_JOURNEY_ID=?", arrayOf(id.toString()), null, null, null)
         return extractJourneys(curs)[0]
     }
 
@@ -56,7 +56,7 @@ class JourneysRepository(context: Context) {
         try {
 
             db.writableDatabase.beginTransaction()
-            db.writableDatabase.delete(TABLE_NAME, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
+            db.writableDatabase.delete(JOURNEY_TABLE_NAME, "$KEY_JOURNEY_ID=?", arrayOf(journey.id.toString()))
             db.writableDatabase.setTransactionSuccessful()
 
         } finally {
