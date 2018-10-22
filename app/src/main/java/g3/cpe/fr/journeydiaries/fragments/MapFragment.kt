@@ -9,15 +9,15 @@ import android.support.annotation.RequiresApi
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.MapFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import g3.cpe.fr.journeydiaries.R
 import g3.cpe.fr.journeydiaries.databinding.FragmentMapBinding
 import g3.cpe.fr.journeydiaries.models.Journey
 import g3.cpe.fr.journeydiaries.models.JourneyViewModel
-import g3.cpe.fr.journeydiaries.providers.LocationProvider
 import g3.cpe.fr.journeydiaries.repositories.JourneysRepository
 
 
@@ -25,6 +25,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var journeysRepository: JourneysRepository
     var journeyId: Int = 0
+    private lateinit var binding: FragmentMapBinding
 
     @RequiresApi(Build.VERSION_CODES.N)
     @Nullable
@@ -35,9 +36,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val journey = loadJourney()
         binding.jvm = JourneyViewModel(journey)
 
-        val mapFragment : SupportMapFragment? =
-                fragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
+        binding.map.getMapAsync(this)
 
         return binding.root
     }
