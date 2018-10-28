@@ -77,7 +77,7 @@ class NotesRepository(context: Context) {
             val latitude = curs.getDouble(curs.getColumnIndex(KEY_NOTE_LAT))
             val longitude = curs.getDouble(curs.getColumnIndex(KEY_NOTE_LONG))
 
-            results.add(Note(id, journeyId, desription, longitude, latitude))
+            results.add(Note(id, journeyId, desription, latitude, longitude))
         }
 
         curs.close()

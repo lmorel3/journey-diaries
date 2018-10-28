@@ -1,11 +1,13 @@
 package g3.cpe.fr.journeydiaries.fragments
 
 import android.app.Fragment
+import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.annotation.RequiresApi
+import android.support.v4.app.ActivityCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,21 +17,32 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import g3.cpe.fr.journeydiaries.R
 import g3.cpe.fr.journeydiaries.databinding.FragmentMapBinding
 import g3.cpe.fr.journeydiaries.models.Journey
 import g3.cpe.fr.journeydiaries.models.JourneyViewModel
+import g3.cpe.fr.journeydiaries.models.Note
 import g3.cpe.fr.journeydiaries.repositories.JourneysRepository
 import g3.cpe.fr.journeydiaries.repositories.NotesRepository
 
 
+
+
 class MapFragment : Fragment(), OnMapReadyCallback {
+
+    class MapPresenter(view: MainActivityContract.View) : MainActivityContract.Presenter(view)
 
     private lateinit var journeysRepository: JourneysRepository
     private lateinit var noteRepository: NotesRepository
 
+    lateinit var presenter: MainActivityContract.Presenter
+
+    private val markers: MutableMap<Marker, Note> = mutableMapOf()
+
     var journeyId: Int = 0
+    private lateinit var journey: Journey
     private lateinit var binding: FragmentMapBinding
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -40,7 +53,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         journeysRepository = JourneysRepository(context)
         noteRepository = NotesRepository(context)
 
-        val journey = loadJourney()
+        journey = loadJourney()
         binding.jvm = JourneyViewModel(journey)
 
         binding.map.getMapAsync(this)
@@ -55,8 +68,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
 
-        map.getUiSettings().isMyLocationButtonEnabled = false
-        //map.isMyLocationEnabled = true
+        map.uiSettings.isMyLocationButtonEnabled = false
+
+        if (ActivityCompat.checkSelfPermission(activity,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
+        }
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         try {
@@ -65,24 +82,32 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             e.printStackTrace()
         }
 
+        map.setOnMapLongClickListener { latLng ->
+            var found: Boolean = false
+            for (marker in markers.keys) {
+                if (!found && Math.abs(marker.position.latitude - latLng.latitude) < 0.0009 && Math.abs(marker.position.longitude - latLng.longitude) < 0.0009) {
+                    markers[marker]?.let { presenter.onAddEditNote(journey, it) }
+                    found = true
+                }
+            }
 
-        // Updates the location and zoom of the MapView
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(43.1, -87.9), 10f)
-        map.animateCamera(cameraUpdate)
+            // If no marker found : adds a new note
+            if(!found){
+                val note: Note = Note.mkNote(journey)
+                note.lat = latLng.latitude
+                note.long = latLng.longitude
+
+                presenter.onAddEditNote(journey, note)
+            }
+        }
 
         val notes = noteRepository.getByJourneyId(journeyId)
 
-        // TODO: Ask for removal on long click + edit
-        // https://stackoverflow.com/questions/15391665/setting-a-longclicklistener-on-a-map-marker
-
-        if(notes.isEmpty()) {
-            val sydney = LatLng(-34.0, 151.0)
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f))
-            map.addMarker(MarkerOptions().position(sydney))
-        } else {
+        if(!notes.isEmpty()) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(notes[0].lat, notes[0].long), 13f))
             for(note in notes) {
-                map.addMarker(MarkerOptions().position(LatLng(note.lat, note.long)).title(note.description))
+                val marker: Marker = map.addMarker(MarkerOptions().position(LatLng(note.lat, note.long)).title(note.description))
+                markers[marker] = note
             }
         }
 

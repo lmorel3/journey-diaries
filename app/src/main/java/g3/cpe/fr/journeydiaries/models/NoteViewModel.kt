@@ -11,4 +11,9 @@ class NoteViewModel internal constructor(private var journey: Journey, private v
 
     fun getJourney() = journey
 
+    fun setLocation(lat: Double, long: Double) {
+        note.lat = lat
+        note.long = long
+    }
+
 }
